@@ -1,0 +1,26 @@
+<h1>Blackjack</h1>
+
+<h4>Welcome, <%= session[:player_name] %>!</h4>
+
+Dealer's cards:
+<ul>
+  <% session[:dealer_hand].each do |card| %>
+    <li><%= card.to_s %></li>
+  <% end %>
+</ul>
+
+<%= session[:player_name]%>'s cards:
+
+<ul>
+  <% session[:player_hand].each do |card| %>
+    <li><%= card.to_s %></li>
+  <% end %>
+</ul>
+</br>
+<form action='/hit' method='post'>
+<input type='submit' value='Hit' class='btn'>
+</form>
+
+<form action='/hit' method='post'>
+<input type='submit' value='Stay' class='btn'>
+</form>
