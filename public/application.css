@@ -1,0 +1,16 @@
+form#hit {
+  float: left;
+  margin-right: 10px
+}
+
+form#stay {
+  float: left;
+}
+
+img.card {
+  margin: 5px 5px;
+}
+
+form#dealer {
+  margin-top: 10px
+}

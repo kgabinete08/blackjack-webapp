@@ -1,26 +1,48 @@
 <h1>Blackjack</h1>
 
-<h4>Welcome, <%= session[:player_name] %>!</h4>
+<% if @play_again %>
+<p>
+  <strong>Play again?</strong>
+  <a href="/game" class="btn">Yes</a>
+  <a href="/game_over" class="btn">No</a>
+</p>
+<% end %>
 
-Dealer's cards:
-<ul>
-  <% session[:dealer_hand].each do |card| %>
-    <li><%= card.to_s %></li>
+<div class='well'>
+<h5>Dealer's cards:</h5>
+  <% session[:dealer_hand].each_with_index do |card, i| %>
+    <% if session[:turn] != "Dealer" && i == 0 %>
+      <img src='/images/cards/cover.jpg'>
+    <% else %>
+      <%= display_card(card) %>
+    <% end %>
   <% end %>
-</ul>
+</div>
 
-<%= session[:player_name]%>'s cards:
+<% if @show_dealer_button %>
+  <p>Dealer's total is <%= calculate_hand(session[:dealer_hand]) %></p>
+  <form action='/game/dealer/hit' method='post' id='dealer'>
+  <input type='submit' value="See Dealer's next card" class='btn'>
+  </form>
+<% end %>
 
-<ul>
+<div class='well'>
+<h5><%= session[:player_name]%>'s cards:</h5>
   <% session[:player_hand].each do |card| %>
-    <li><%= card.to_s %></li>
+    <%= display_card(card) %>
   <% end %>
-</ul>
-</br>
-<form action='/hit' method='post'>
-<input type='submit' value='Hit' class='btn'>
-</form>
+</div>
 
-<form action='/hit' method='post'>
-<input type='submit' value='Stay' class='btn'>
-</form>
+<%= session[:player_name] %>'s total is <%= calculate_hand(session[:player_hand]) %>
+
+<p>
+<% if @show_hit_or_stay_buttons %>
+  <form action='/game/player/hit' method='post' id='hit'>
+  <input type='submit' value='Hit' class='btn'>
+  </form>
+
+  <form action='/game/player/stay' method='post' id='stay'>
+  <input type='submit' value='Stay' class='btn'>
+  </form>
+<% end %>
+</p>
