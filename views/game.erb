@@ -3,7 +3,7 @@
 <% if @play_again %>
 <p>
   <strong>Play again?</strong>
-  <a href="/game" class="btn">Yes</a>
+  <a href="/bet" class="btn btn-inverse">Yes</a>
   <a href="/game_over" class="btn">No</a>
 </p>
 <% end %>
@@ -20,9 +20,9 @@
 </div>
 
 <% if @show_dealer_button %>
-  <p>Dealer's total is <%= calculate_hand(session[:dealer_hand]) %></p>
+  <p>Dealer's total is <%= calculate_hand(session[:dealer_hand]) %>.  Dealer must hit.</p>
   <form action='/game/dealer/hit' method='post' id='dealer'>
-  <input type='submit' value="See Dealer's next card" class='btn'>
+  <input type='submit' value="See Dealer's next card" class='btn btn-primary'>
   </form>
 <% end %>
 
@@ -33,12 +33,12 @@
   <% end %>
 </div>
 
-<%= session[:player_name] %>'s total is <%= calculate_hand(session[:player_hand]) %>
+<%= session[:player_name] %>'s total is <%= calculate_hand(session[:player_hand]) %>.  Your bet this round is <%= session[:bet] %>
 
 <p>
 <% if @show_hit_or_stay_buttons %>
   <form action='/game/player/hit' method='post' id='hit'>
-  <input type='submit' value='Hit' class='btn'>
+  <input type='submit' value='Hit' class='btn btn-success'>
   </form>
 
   <form action='/game/player/stay' method='post' id='stay'>

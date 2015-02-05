@@ -1,0 +1,10 @@
+<h3>How much would you like to bet for this round?</h3>
+
+<p>
+You currently have $ <%= session[:money] %>
+<form action='/bet' method='post'>
+  <input type='text' name ='bet' placeholder='Enter amount here'>
+  </br>
+  <input type='submit' class='btn' value='Submit'>
+</form>
+</p>
