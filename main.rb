@@ -46,33 +46,29 @@ helpers do
     image = "<img src='/images/cards/#{suit}_#{value}.jpg' class='card'>"
   end
 
-
   def win(msg)
-    @show_hit_or_stay_buttons = false
-    @play_again = true
     session[:money] += session[:bet].to_i
     @success = "#{msg} You won #{session[:bet]}!"
   end
 
   def lose(msg)
-    @show_hit_or_stay_buttons = false
-    @play_again = true
     session[:money] -= session[:bet].to_i
     @error = "#{msg}, You lost #{session[:bet]}."
   end
 
   def tie(msg)
-    @show_hit_or_stay_buttons = false
-    @play_again = true
     @success = "#{msg}"
   end
 
   def blackjack(msg)
-    @show_hit_or_stay_buttons = false
-    @play_again = true
     blackjack_win = session[:bet].to_i * 1.5
     session[:money] += blackjack_win.to_i
     @success = "#{msg} You won #{(blackjack_win).to_i}!"
+  end
+
+  def toggle_buttons
+    @show_hit_or_stay_buttons = false
+    @play_again = true
   end
 
 end
@@ -139,23 +135,31 @@ get '/game' do
 
   player_total = calculate_hand(session[:player_hand])
   dealer_total = calculate_hand(session[:dealer_hand])
-  if player_total == BLACKJACK
-    blackjack("#{session[:player_name]} hit Blackjack!")
-  elsif player_total == BLACKJACK && dealer_total == BLACKJACK
-    tie("It's a tie!")
-  end
 
+  case
+  when player_total == BLACKJACK
+    blackjack("#{session[:player_name]} hit Blackjack!")
+    toggle_buttons
+  when player_total == BLACKJACK && dealer_total == BLACKJACK
+    tie("It's a tie!")
+    toggle_buttons
+  end
   erb :game
 end
 
 post '/game/player/hit' do
   session[:player_hand] << session[:deck].pop
   player_total = calculate_hand(session[:player_hand])
-  if player_total == BLACKJACK
+
+  case
+  when player_total == BLACKJACK
     win("#{session[:player_name]} hit Blackjack!")
-  elsif player_total > BLACKJACK
+    toggle_buttons
+  when player_total > BLACKJACK
     lose("Sorry #{session[:player_name]} busted!")
+    toggle_buttons
   end
+
   erb :game
 end
 
@@ -170,10 +174,13 @@ get '/game/dealer/turn' do
   session[:turn] = "Dealer"
   @show_hit_or_stay_buttons = false
   dealer_total = calculate_hand(session[:dealer_hand])
+
   if dealer_total == BLACKJACK
     lose("Dealer hit Blackjack!")
+    toggle_buttons
   elsif dealer_total > BLACKJACK
     win("Dealer Busted!")
+    toggle_buttons
   elsif dealer_total >= DEALER_MIN
     redirect '/game/compare'
   else
@@ -195,10 +202,13 @@ get '/game/compare' do
 
   if player_total < dealer_total
     lose("Sorry #{session[:player_name]} lost!")
+    toggle_buttons
   elsif player_total > dealer_total
     win("#{session[:player_name]} won!")
+    toggle_buttons
   else
     tie("It's a tie!")
+    toggle_buttons
   end
 
   erb :game

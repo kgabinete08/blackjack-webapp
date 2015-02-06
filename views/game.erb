@@ -22,7 +22,7 @@
 <% if @show_dealer_button %>
   <p>Dealer's total is <%= calculate_hand(session[:dealer_hand]) %>.  Dealer must hit.</p>
   <form action='/game/dealer/hit' method='post' id='dealer'>
-  <input type='submit' value="See Dealer's next card" class='btn btn-primary'>
+    <input type='submit' value="See Dealer's next card" class='btn btn-primary'>
   </form>
 <% end %>
 
@@ -38,11 +38,11 @@
 <p>
 <% if @show_hit_or_stay_buttons %>
   <form action='/game/player/hit' method='post' id='hit'>
-  <input type='submit' value='Hit' class='btn btn-success'>
+    <input type='submit' value='Hit' class='btn btn-success'>
   </form>
 
   <form action='/game/player/stay' method='post' id='stay'>
-  <input type='submit' value='Stay' class='btn'>
+    <input type='submit' value='Stay' class='btn'>
   </form>
 <% end %>
 </p>
