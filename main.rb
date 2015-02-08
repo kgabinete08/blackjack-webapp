@@ -48,22 +48,22 @@ helpers do
 
   def win(msg)
     session[:money] += session[:bet].to_i
-    @success = "#{msg} You won #{session[:bet]}!"
+    @winner = "#{msg} You won #{session[:bet]}!"
   end
 
   def lose(msg)
     session[:money] -= session[:bet].to_i
-    @error = "#{msg}, You lost #{session[:bet]}."
+    @loser = "#{msg}, You lost #{session[:bet]}."
   end
 
   def tie(msg)
-    @success = "#{msg}"
+    @winner = "#{msg}"
   end
 
   def blackjack(msg)
     blackjack_win = session[:bet].to_i * 1.5
     session[:money] += blackjack_win.to_i
-    @success = "#{msg} You won #{(blackjack_win).to_i}!"
+    @winner = "#{msg} You won #{(blackjack_win).to_i}!"
   end
 
   def toggle_buttons
@@ -160,11 +160,10 @@ post '/game/player/hit' do
     toggle_buttons
   end
 
-  erb :game
+  erb :game, layout: false
 end
 
 post '/game/player/stay' do
-  @success = "#{session[:player_name]} chose to stay."
   @show_hit_or_stay_buttons = false
   @show_dealer_button = true
   redirect '/game/dealer/turn'
@@ -187,7 +186,7 @@ get '/game/dealer/turn' do
     @show_dealer_button = true
   end
 
-  erb :game
+  erb :game, layout: false
 end
 
 post '/game/dealer/hit' do
@@ -211,7 +210,7 @@ get '/game/compare' do
     toggle_buttons
   end
 
-  erb :game
+  erb :game, layout: false
 end
 
 get '/game_over' do
